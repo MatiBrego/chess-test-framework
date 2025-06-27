@@ -1,4 +1,6 @@
-import edu.austral.dissis.chess.test.game.TestGameRunner
+import edu.austral.dissis.chess.test.game.TestMoveFailure
+import edu.austral.dissis.chess.test.game.TestMoveResult
+import edu.austral.dissis.chess.test.game.TestMoveSuccess
 
 data class RunnersHistory(
     val history: List<TestGameRunnerImpl> = emptyList(),
@@ -9,22 +11,22 @@ data class RunnersHistory(
         return RunnersHistory(history + runner, emptyList())
     }
 
-    fun undo(current: TestGameRunnerImpl): TestGameRunner {
+    fun undo(current: TestGameRunnerImpl): TestMoveResult {
         return if (history.isNotEmpty()) {
             val last = history.last()
-            last.withHistory(RunnersHistory(history.dropLast(1), undone + current))
+            TestMoveSuccess(last.withHistory(RunnersHistory(history.dropLast(1), undone + current)))
         } else {
-            throw IllegalStateException("No moves to undo")
+            return TestMoveFailure(history.last().getBoard())
         }
     }
 
-    fun redo(): TestGameRunner {
+    fun redo(): TestMoveResult {
         if (undone.isNotEmpty()) {
             val lastUndone = undone.last()
             val newUndone = undone.dropLast(1)
-            return lastUndone.withHistory(RunnersHistory(history + lastUndone, newUndone))
+            return TestMoveSuccess(lastUndone.withHistory(RunnersHistory(history + lastUndone, newUndone)))
         } else {
-            throw IllegalStateException("No moves to undo")
+            return TestMoveFailure(history.last().getBoard())
         }
     }
 }
