@@ -16,7 +16,7 @@ plugins {
 
 
 group = "edu.austral.dissis.chess"
-version = "1.5.0"
+version = "1.7.0"
 
 repositories {
     mavenLocal()
@@ -52,12 +52,6 @@ java {
     withJavadocJar()
 }
 
-// Define a task for creating a sources jar
-task sourcesJar(type: Jar, dependsOn: classes) {
-    archiveClassifier.set('sources')
-    from sourceSets.main.allSource
-}
-
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
@@ -84,7 +78,6 @@ publishing {
     publications {
         maven(MavenPublication) {
             from components.java
-            artifact(sourcesJar)  // Attach the explicitly defined sources jar
         }
     }
 }
