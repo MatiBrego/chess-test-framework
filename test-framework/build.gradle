@@ -41,7 +41,7 @@ dependencies {
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    testImplementation 'matibrego.chess:app:1.1.1-SNAPSHOT'
+    testImplementation 'matibrego.chess:app:1.1.1'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
